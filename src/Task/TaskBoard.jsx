@@ -14,18 +14,24 @@ const TaskBoard = () => {
         "isFavorite": true
     }
     const [tasks, setTasks] = useState([defaultTask]);
-    const[showAddModal, setShowAddModal] = useState(false)
+    const[showAddModal, setShowAddModal] = useState(false);
+    const [taskToUpdate, setTaskToUpdate] = useState(null);
 
-    function handleAddTask(){
-        setTasks((previous) => {
+    function handleAddTask(newTask){
+        setTasks([...tasks, newTask])
+        setShowAddModal(false)
+    }
 
-        })
+    function hanldeEdit(editTask){
+        setTaskToUpdate(editTask)
+        setShowAddModal(true)
+
     }
 
     return (
         <div>
             <section className="mb-20 " id="tasks">
-               { showAddModal && <AddTaskModal></AddTaskModal> }
+               { showAddModal && <AddTaskModal  onSave={handleAddTask} taskToUpdate={taskToUpdate} /> }
                 <div className="container">
                     <div className="p-2 flex justify-end">
                         <SearchTask></SearchTask>
@@ -33,7 +39,10 @@ const TaskBoard = () => {
                     <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
 
                         <TaskActions onAddClick={() =>setShowAddModal(true) }  ></TaskActions>
-                        <TaskList tasks={tasks} ></TaskList>
+                        <TaskList 
+                         tasks={tasks} 
+                         onEdit={hanldeEdit}
+                        ></TaskList>
 
                     </div>
                 </div>
